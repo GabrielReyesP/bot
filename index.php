@@ -1,58 +1,63 @@
 <?php
 
 $token = '7553138734:AAEyLBFufqhstjus_kyeKMxv0zxXQ2-1r30';
-$website = 'https://api.telegram.org/bot'.$token;
+$website = 'https://api.telegram.org/bot'.$TOKEN;
 $input = file_get_contents('php://input');
-$update = json_decode($input, TRUE);
+$update = json_decode($input, true);
 
-if (!isset($update["message"])) {
-    exit;
+$productos = [
+    // Pasillo 1
+    'carne' => 'Pasillo 1',
+    'queso' => 'Pasillo 1',
+    'jamón' => 'Pasillo 1',
+
+    // Pasillo 2
+    'leche' => 'Pasillo 2',
+    'yogurth' => 'Pasillo 2',
+    'cereal' => 'Pasillo 2',
+
+    // Pasillo 3
+    'bebidas' => 'Pasillo 3',
+    'jugos' => 'Pasillo 3',
+
+    // Pasillo 4
+    'pan' => 'Pasillo 4',
+    'pasteles' => 'Pasillo 4',
+    'tortas' => 'Pasillo 4',
+
+    // Pasillo 5
+    'detergente' => 'Pasillo 5',
+    'lavaloza' => 'Pasillo 5',
+];
+
+// Procesar mensaje
+if (isset($update["message"])) {
+    $message = $update["message"];
+    $chat_id = $message["chat"]["id"];
+    $text = strtolower(trim($message["text"] ?? ""));
+
+    if ($text === "/start") {
+        $msg = "👋 ¡Hola! Envíame el nombre de un producto y te diré en qué pasillo se encuentra.";
+        sendMessage($chat_id, $msg);
+    } elseif (isset($productos[$text])) {
+        $pasillo = $productos[$text];
+        sendMessage($chat_id, "✅ El producto *$text* se encuentra en *$pasillo*.", true);
+    } else {
+        sendMessage($chat_id, "❓ No entiendo la pregunta.");
+    }
 }
-
-$message = $update["message"];
-$chat_id = $message["chat"]["id"];
-$text = $message["text"] ?? "";
 
 // Función para enviar mensajes
-function sendMessage($chat_id, $text) {
+function sendMessage($chat_id, $text, $markdown = false) {
     global $API_URL;
-    file_get_contents($API_URL . "sendMessage?chat_id=$chat_id&text=" . urlencode($text));
-}
-
-// Manejador de comandos
-switch ($text) {
-    case '/start':
-        $msg = "🛒 ¡Bienvenido! Aquí tienes 4 productos recomendados:\n\n";
-        $msg .= "1. 🍎 Manzanas - Pasillo: Frutas\n";
-        $msg .= "2. 🥖 Pan integral - Pasillo: Panadería\n";
-        $msg .= "3. 🧼 Jabón líquido - Pasillo: Aseo\n";
-        $msg .= "4. 🥛 Leche descremada - Pasillo: Lácteos\n\n";
-        $msg .= "¡Usa el menú para explorar más productos!";
-        sendMessage($chat_id, $msg);
-        break;
-
-    default:
-        sendMessage($chat_id, "❓ No entiendo ese comando. Escribe /start para ver recomendaciones.");
-        break;
-}
- if($text === '/start'){
-        $response = "¡Hola! Bienvenido al asistente virtual del supermercado \n\npuedes";
-    } else {
-        $response = $productos[$text] ?? "Lo siento, no entiendo lo que quieres decir";
-    };
-
-if($message){
-    $text = strtolower(trim($message['text'] ?? ''));
-    $chatId = $message['chat']['id'] ?? '';
-    $productos =[
-        'carne'&&'queso'&&'jamon' => 'Pasillo 1',
-        'leche'&&'Yogurth'&&'Cereal'=> 'pasillo 2',
-        'Bebidas'&&'Jugos' => 'pasillo 3',
-        'Pan'&&'Pasteles'&&'Tortas' => 'Pasillo 4',
-        'Detergente'&&'Lavaloza' =>'Pasillo 5'
+    $data = [
+        'chat_id' => $chat_id,
+        'text' => $text,
     ];
-   
-    $apiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
-    file_get_contents($apiUrl . "?chat_id={$chatId}&text=" . urldecode($response));
+    if ($markdown) {
+        $data['parse_mode'] = 'Markdown';
+    }
+    file_get_contents($API_URL . "sendMessage?" . http_build_query($data));
+}
+?>
 
-}   
