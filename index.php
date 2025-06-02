@@ -1,6 +1,10 @@
 <?php
-$update = json_decode(file_get_contents("php://input"),true);
-$message = $update ['message'] ?? null;
+
+$token = '7553138734:AAEyLBFufqhstjus_kyeKMxv0zxXQ2-1r30';
+$website = 'https://api.telegram.org/bot'.$token;
+$input = file_get_contents('php://input');
+$update = json_decode($input, TRUE);
+
 
 if($message){
     $text = strtolower(trim($message['text'] ?? ''));
@@ -17,7 +21,6 @@ if($message){
     } else {
         $response = $productos[$text] ?? "Lo siento, no entiendo lo que quieres decir";
     }
-    $botToken = "7553138734:AAEyLBFufqhstjus_kyeKMxv0zxXQ2-1r30";
     $apiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
     file_get_contents($apiUrl . "?chat_id={$chatId}&text=" . urldecode($response));
 
