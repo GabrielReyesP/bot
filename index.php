@@ -18,7 +18,7 @@ if($message){
         $response = $productos[$text] ?? "Lo siento, no entiendo lo que quieres decir";
     }
     $botToken = "7553138734:AAEyLBFufqhstjus_kyeKMxv0zxXQ2-1r30";
-    $apiUrl = "https://web.telegram.org/a/#7553138734";
+    $apiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
     file_get_contents($apiUrl . "?chat_id={$chatId}&text=" . urldecode($response));
 
 }   
