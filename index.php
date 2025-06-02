@@ -5,6 +5,11 @@ $website = 'https://api.telegram.org/bot'.$token;
 $input = file_get_contents('php://input');
 $update = json_decode($input, TRUE);
 
+ if($text === '/start'){
+        $response = "¡Hola! Bienvenido al asistente virtual del supermercado \n\npuedes";
+    } else {
+        $response = $productos[$text] ?? "Lo siento, no entiendo lo que quieres decir";
+    };
 
 if($message){
     $text = strtolower(trim($message['text'] ?? ''));
@@ -16,11 +21,7 @@ if($message){
         'Pan'&&'Pasteles'&&'Tortas' => 'Pasillo 4',
         'Detergente'&&'Lavaloza' =>'Pasillo 5'
     ];
-    if($text === '/start'){
-        $response = "¡Hola! Bienvenido al asistente virtual del supermercado \n\npuedes";
-    } else {
-        $response = $productos[$text] ?? "Lo siento, no entiendo lo que quieres decir";
-    }
+   
     $apiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
     file_get_contents($apiUrl . "?chat_id={$chatId}&text=" . urldecode($response));
 
