@@ -41,9 +41,9 @@ if (isset($update["message"])) {
         sendMessage($chat_id, $msg);
     } elseif (isset($productos[$text])) {
         $pasillo = $productos[$text];
-        sendMessage($chat_id, "✅ El producto *$text* se encuentra en *$pasillo*.", true);
+        sendMessage($chat_id, "El producto *$text* se encuentra en *$pasillo*.", true);
     } else {
-        sendMessage($chat_id, "❓ No entiendo la pregunta.");
+        sendMessage($chat_id, "No entiendo la pregunta.");
     }
 }
 
