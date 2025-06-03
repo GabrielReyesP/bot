@@ -60,9 +60,6 @@ function sendMessage($chat_id, $text, $markdown = false) {
     }
     file_get_contents($API_URL . "sendMessage?" . http_build_query($data));
     
-    if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['REQUEST_URI'] === '/') {
-    echo "🤖 Bot funcionando correctamente.";
-    exit; // evita que se siga ejecutando el resto del código
-}
+
 }
 ?>
