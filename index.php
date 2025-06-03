@@ -1,7 +1,8 @@
 <?php
 
 $token = '7553138734:AAEyLBFufqhstjus_kyeKMxv0zxXQ2-1r30';
-$website = 'https://api.telegram.org/bot7553138734:AAEyLBFufqhstjus_kyeKMxv0zxXQ2-1r30'.$TOKEN;
+
+$website = 'https://api.telegram.org/bot'.$token;
 $input = file_get_contents('php://input');
 $update = json_decode($input, true);
 
@@ -58,6 +59,8 @@ function sendMessage($chat_id, $text, $markdown = false) {
         $data['parse_mode'] = 'Markdown';
     }
     file_get_contents($API_URL . "sendMessage?" . http_build_query($data));
+    
+    
 }
 ?>
 
